@@ -32,16 +32,13 @@ class Analizador:
         return ventas_por_provincia
 
     def ventas_por_provincia(self, nombre_provincia):
-       """Retoma el total de ventasde una provincia especifica"""
-       nombre_provincia = nombre_provincia.strip().upper()
-       #Obtener el resumen de las ventas de todas las provincias
-       resumen = self.ventas_totales_por_provincia()
+        """Retoma el total de ventas de una provincia específica"""
+        nombre_provincia = nombre_provincia.strip().upper()
+        resumen = self.ventas_totales_por_provincia()
 
-       #Verificar si la provincia está en el diccionario
-       if nombre_provincia not in resumen:
+        if nombre_provincia not in resumen:
             raise KeyError(f"La provincia {nombre_provincia} no se encuentra en los datos")
-       return resumen[nombre_provincia]
-    
+        return resumen[nombre_provincia]
 
     def exportaciones_totales_por_mes(self):
         exportaciones_por_mes = {}
@@ -57,7 +54,22 @@ class Analizador:
                 exportaciones_por_mes[mes] += exportaciones
             else:
                 exportaciones_por_mes[mes] = exportaciones
-
         return exportaciones_por_mes
 
-
+    def diferencia_ventas_exportaciones_por_provincia(self):
+        diferencia_por_provincia = {}
+        for fila in self.datos:
+            provincia = fila['PROVINCIA']
+            if provincia == "ND":
+                continue
+            try:
+                ventas = float(fila['TOTAL_VENTAS'])
+                exportaciones = float(fila['EXPORTACIONES'])
+            except (ValueError, TypeError):
+                continue
+            diferencia = ventas - exportaciones
+            if provincia in diferencia_por_provincia:
+                diferencia_por_provincia[provincia] += diferencia
+            else:
+                diferencia_por_provincia[provincia] = diferencia
+        return diferencia_por_provincia

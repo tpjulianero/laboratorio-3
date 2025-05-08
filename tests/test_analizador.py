@@ -19,7 +19,7 @@ class TestAnalizador(unittest.TestCase):
 
     def test_ventas_totales_todaslas_mayores_0(self):
         resumen = self.analizador.ventas_totales_por_provincia()
-        self.assertTrue(all(float(v)> 0 for v in resumen.values()))
+        self.assertTrue(all(float(v) > 0 for v in resumen.values()))
 
     def test_ventas_por_provincia_inexistente(self):
         with self.assertRaises(KeyError):
@@ -32,3 +32,12 @@ class TestAnalizador(unittest.TestCase):
     def test_exportaciones_todos_los_meses_mayor_igual_0(self):
         exportaciones = self.analizador.exportaciones_totales_por_mes()
         self.assertTrue(all(float(v) >= 0 for v in exportaciones.values()))
+
+    def test_diferencia_ventas_exportaciones_por_provincia(self):
+        diferencias = self.analizador.diferencia_ventas_exportaciones_por_provincia()
+        self.assertIsInstance(diferencias, dict)
+        self.assertEqual(len(diferencias), 24)
+        # Validar que cada diferencia sea un número (positivo o negativo)
+        for valor in diferencias.values():
+            self.assertIsInstance(valor, float)
+

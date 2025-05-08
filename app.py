@@ -22,5 +22,10 @@ def main():
     for mes, total in exportaciones.items():
         print(f"\t{mes}: ${total:.2f}")
 
+    print("\nDiferencia entre ventas y exportaciones por provincia:")
+    diferencias = analizador.diferencia_ventas_exportaciones_por_provincia()
+    for prov, valor in diferencias.items():
+        print(f"\t{prov}: ${valor:,.2f}")
+
 if __name__ == "__main__":
     main()
