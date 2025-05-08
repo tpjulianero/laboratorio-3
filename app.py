@@ -11,8 +11,16 @@ def main():
 
     print("\nCompras para una provincia")
     provincia = input("\tIngrese el nombre de una provincia: ")
-    ventas = analizador.ventas_por_provincia(provincia)
-    print(f"\tVentas de {provincia}: ${ventas:,.2f}")
+    try:
+        ventas = analizador.ventas_por_provincia(provincia)
+        print(f"\tVentas de {provincia}: ${ventas:,.2f}")
+    except KeyError as e:
+        print(e)
+
+    print("\nExportaciones totales por mes:")
+    exportaciones = analizador.exportaciones_totales_por_mes()
+    for mes, total in exportaciones.items():
+        print(f"\t{mes}: ${total:.2f}")
 
 if __name__ == "__main__":
     main()

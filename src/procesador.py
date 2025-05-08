@@ -22,8 +22,8 @@ class Analizador:
         ventas_por_provincia = {}
         for fila in self.datos:
             provincia = fila['PROVINCIA']
-            if provincia.upper() == "ND":
-                continue  # Ignorar provincia 'ND'
+            if provincia == "ND":
+                continue
             ventas = fila['TOTAL_VENTAS']
             if provincia in ventas_por_provincia:
                 ventas_por_provincia[provincia] += ventas
@@ -31,13 +31,33 @@ class Analizador:
                 ventas_por_provincia[provincia] = ventas
         return ventas_por_provincia
 
-def ventas_por_provincia(self, nombre_provincia):
-        total = 0.0
-        
-        #obtener el resumen de las ventas de todas las provincias 
-        resumen = self.ventas_por_provincia()
-        #verificar si la provincia 
-        if nombre_provincia not in resumen:
-            raise KeyError(f"La provincia {nombre_provincia} no se encuentra en los datos")
+    def ventas_por_provincia(self, nombre_provincia):
+       """Retoma el total de ventasde una provincia especifica"""
+       nombre_provincia = nombre_provincia.strip().upper()
+       #Obtener el resumen de las ventas de todas las provincias
+       resumen = self.ventas_totales_por_provincia()
 
-        return resumen(nombre_provincia)
+       #Verificar si la provincia está en el diccionario
+       if nombre_provincia not in resumen:
+            raise KeyError(f"La provincia {nombre_provincia} no se encuentra en los datos")
+       return resumen[nombre_provincia]
+    
+
+    def exportaciones_totales_por_mes(self):
+        exportaciones_por_mes = {}
+        for fila in self.datos:
+            mes = fila['MES']
+            if mes == "ND":
+                continue
+            try:
+                exportaciones = float(fila['EXPORTACIONES'])
+            except (ValueError, TypeError):
+                continue
+            if mes in exportaciones_por_mes:
+                exportaciones_por_mes[mes] += exportaciones
+            else:
+                exportaciones_por_mes[mes] = exportaciones
+
+        return exportaciones_por_mes
+
+
